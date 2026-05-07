@@ -126,46 +126,46 @@ export const Chat = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-80px)] max-w-[1700px] mx-auto px-8 md:px-16 py-12 flex flex-col gap-10 select-none font-display">
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-10 bg-black border-4 border-accent p-10 relative overflow-hidden group shadow-[15px_15px_0_white]">
-        <div className="flex items-center gap-12 z-10 w-full lg:w-auto">
-          <button onClick={() => navigate("/characters")} className="w-20 h-20 bg-white text-black flex items-center justify-center hover:bg-accent hover:text-white transition-all -rotate-3 hover:rotate-3 shadow-[6px_6px_0_var(--color-accent)] active:shadow-none">
-            <ChevronLeft size={48} strokeWidth={4} />
+    <div className="h-[calc(100vh-80px)] max-w-[1700px] mx-auto px-4 md:px-16 py-6 md:py-12 flex flex-col gap-6 md:gap-10 select-none font-display">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-10 bg-black border-4 border-accent p-6 md:p-10 relative overflow-hidden group shadow-[10px_10px_0_white] md:shadow-[15px_15px_0_white]">
+        <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-12 z-10 w-full lg:w-auto">
+          <button onClick={() => navigate("/characters")} className="w-12 h-12 md:w-20 md:h-20 bg-white text-black flex items-center justify-center hover:bg-accent hover:text-white transition-all -rotate-3 hover:rotate-3 shadow-[4px_4px_0_var(--color-accent)] md:shadow-[6px_6px_0_var(--color-accent)] active:shadow-none">
+            <ChevronLeft className="w-8 h-8 md:w-12 md:h-12" strokeWidth={4} />
           </button>
           
-          <div className="flex items-center gap-12">
-            <div className="w-32 h-32 border-4 border-white/20 p-1 transition-all duration-700 group-hover:border-accent shadow-[10px_10px_0_white] -rotate-2 group-hover:rotate-0 overflow-hidden relative grayscale group-hover:grayscale-0">
+          <div className="flex items-center gap-6 md:gap-12">
+            <div className="w-20 h-20 md:w-32 md:h-32 border-4 border-white/20 p-1 transition-all duration-700 group-hover:border-accent shadow-[6px_6px_0_white] md:shadow-[10px_10px_0_white] -rotate-2 group-hover:rotate-0 overflow-hidden relative grayscale group-hover:grayscale-0">
               <img src={character.avatarUrl} alt={character.name} className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-[8s]" />
               <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-40 transition-opacity" />
             </div>
             <div>
-              <div className="flex items-center gap-8 mb-4">
-                <h2 className="text-7xl font-black uppercase italic tracking-tighter leading-none group-hover:text-accent transition-colors">{character.name}</h2>
-                <YokaiBadge className="bg-accent text-white italic scale-125 origin-left">{modeAliases[currentMode as string] || currentMode.toUpperCase()}</YokaiBadge>
+              <div className="flex items-center gap-4 md:gap-8 mb-2 md:mb-4">
+                <h2 className="text-3xl md:text-7xl font-black uppercase italic tracking-tighter leading-none group-hover:text-accent transition-colors">{character.name}</h2>
+                <YokaiBadge className="bg-accent text-white italic scale-100 md:scale-125 origin-left">{modeAliases[currentMode as string] || currentMode.toUpperCase()}</YokaiBadge>
               </div>
-              <div className="flex items-center gap-10 text-[14px] font-black tracking-widest uppercase italic text-white/50">
-                 <div className="flex items-center gap-3 text-accent bg-accent/10 px-4 py-1 border-l-4 border-accent">
-                   <Activity size={20} className="animate-ping" />
-                   HEARTBEAT_LIVE
+              <div className="flex items-center gap-6 md:gap-10 text-[10px] md:text-[14px] font-black tracking-widest uppercase italic text-white/50">
+                 <div className="flex items-center gap-2 md:gap-3 text-accent bg-accent/10 px-2 md:px-4 py-1 border-l-4 border-accent">
+                   <Activity className="w-4 h-4 md:w-5 md:h-5 animate-ping" />
+                   LIVE
                  </div>
-                 <div className="flex items-center gap-3">
-                   <Scan size={20} className="text-white/20" />
-                   IMPRESSION: <span className="text-white font-black">{expression.toUpperCase()}</span>
+                 <div className="flex items-center gap-2 md:gap-3">
+                   <Scan className="w-4 h-4 md:w-5 md:h-5 text-white/20" />
+                   MODE: <span className="text-white font-black">{expression.toUpperCase()}</span>
                  </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 z-10 bg-white/5 p-2 border-2 border-white/10 shrink-0">
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 z-10 bg-white/5 p-2 border-2 border-white/10 shrink-0">
           {["Normal", "Friendly", "Roast", "Savage"].map((mode) => (
             <button
               key={mode}
               onClick={() => setCurrentMode(mode as CharacterMode)}
               className={cn(
-                "px-8 py-4 text-[12px] font-black uppercase tracking-[0.2em] italic transition-all skew-x-[-10deg]",
+                "px-4 md:px-8 py-2 md:py-4 text-[10px] md:text-[12px] font-black uppercase tracking-[0.1em] md:tracking-[0.2em] italic transition-all skew-x-[-10deg]",
                 currentMode === mode 
-                  ? "bg-accent text-white shadow-[4px_4px_0_white]" 
+                  ? "bg-accent text-white shadow-[2px_2px_0_white] md:shadow-[4px_4px_0_white]" 
                   : "text-white/20 hover:text-white hover:bg-white/10"
               )}
             >
@@ -176,15 +176,15 @@ export const Chat = () => {
         <div className="absolute inset-0 bg-[url('https://media.giphy.com/media/Vekcn9Oao9t9S/giphy.gif')] opacity-5 mix-blend-overlay pointer-events-none" />
       </div>
 
-      <div className="flex-1 flex flex-col lg:flex-row gap-12 min-h-0">
-        <div className="flex-1 flex flex-col gap-10 min-h-0">
-          <YokaiCard className="flex-1 overflow-hidden flex flex-col !p-0 border-4 border-white/10 relative bg-black shadow-[20px_20px_0_var(--color-accent)]">
-            <div className="flex-1 overflow-y-auto p-12 space-y-16 scrollbar-hide relative z-10">
+      <div className="flex-1 flex flex-col lg:flex-row gap-6 md:gap-12 min-h-0">
+        <div className="flex-1 flex flex-col gap-6 md:gap-10 min-h-0">
+          <YokaiCard className="flex-1 overflow-hidden flex flex-col !p-0 border-4 border-white/10 relative bg-black shadow-[10px_10px_0_var(--color-accent)] md:shadow-[20px_20px_0_var(--color-accent)]">
+            <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-10 md:space-y-16 scrollbar-hide relative z-10">
               <AnimatePresence initial={false}>
                 {messages.length === 0 && (
-                  <div className="h-full flex flex-col items-center justify-center text-center opacity-10 py-60">
-                    <Terminal size={160} className="mb-12 text-accent animate-pulse" />
-                    <span className="text-4xl font-black tracking-[1em] uppercase italic">NO DATA FRAGMENTS EXHIBITED</span>
+                  <div className="h-full flex flex-col items-center justify-center text-center opacity-10 py-32 md:py-60">
+                    <Terminal className="w-20 h-20 md:w-40 md:h-40 mb-8 md:mb-12 text-accent animate-pulse" />
+                    <span className="text-xl md:text-4xl font-black tracking-[0.5em] md:tracking-[1em] uppercase italic">NO DATA</span>
                   </div>
                 )}
                 {messages.map((msg, i) => (
@@ -194,25 +194,21 @@ export const Chat = () => {
                     animate={{ opacity: 1, x: 0 }}
                     className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                   >
-                    <div className={`max-w-[75%] flex flex-col gap-6 ${msg.sender === "user" ? "items-end text-right" : "items-start text-left"}`}>
-                       <div className={`flex items-center gap-4 text-[12px] font-black uppercase tracking-[0.4em] italic ${msg.sender === "user" ? "text-accent" : "text-white/30"}`}>
-                          <div className={cn("w-3 h-3 rotate-45", msg.sender === "user" ? "bg-accent shadow-[0_0_10px_var(--color-accent)]" : "bg-white/10")} />
+                    <div className={`max-w-[85%] md:max-w-[75%] flex flex-col gap-4 md:gap-6 ${msg.sender === "user" ? "items-end text-right" : "items-start text-left"}`}>
+                       <div className={`flex items-center gap-2 md:gap-4 text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] italic ${msg.sender === "user" ? "text-accent" : "text-white/30"}`}>
+                          <div className={cn("w-2 h-2 md:w-3 md:h-3 rotate-45", msg.sender === "user" ? "bg-accent shadow-[0_0_10px_var(--color-accent)]" : "bg-white/10")} />
                           {msg.sender === "user" ? "OPERATIVE" : character.name.toUpperCase()}
                        </div>
                       <div className={cn(
-                        "px-10 py-8 transition-all duration-700 border-4 relative",
+                        "px-6 md:px-10 py-4 md:py-8 transition-all duration-700 border-2 md:border-4 relative",
                         msg.sender === "user" 
-                          ? "bg-white text-black border-white shadow-[10px_10px_0_var(--color-accent)] skew-x-[-2deg] text-3xl font-black italic tracking-tighter" 
-                          : "bg-black/80 border-white/10 text-white text-4xl font-black italic tracking-tighter leading-[0.9] skew-x-[2deg] group-hover:border-accent"
+                          ? "bg-white text-black border-white shadow-[6px_6px_0_var(--color-accent)] md:shadow-[10px_10px_0_var(--color-accent)] skew-x-[-2deg] text-xl md:text-3xl font-black italic tracking-tighter" 
+                          : "bg-black/80 border-white/10 text-white text-2xl md:text-4xl font-black italic tracking-tighter leading-[0.9] skew-x-[2deg] group-hover:border-accent"
                       )}>
                         {msg.text}
-                        <div className={cn(
-                          "absolute top-0 bottom-0 w-2 bg-accent opacity-0 group-hover:opacity-100 transition-opacity",
-                          msg.sender === "user" ? "-right-6" : "-left-6"
-                        )} />
                       </div>
-                      <span className="text-[10px] font-black tracking-[0.5em] uppercase text-white/10 italic">
-                        SYNC_TIME // {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <span className="text-[8px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.5em] uppercase text-white/10 italic">
+                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
                   </motion.div>
@@ -220,34 +216,33 @@ export const Chat = () => {
               </AnimatePresence>
               {isTyping && (
                 <div className="flex justify-start">
-                   <div className="flex gap-4 p-8 bg-white/5 border-4 border-accent/20 px-12 rotate-3">
-                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-4 h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
-                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }} className="w-4 h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
-                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }} className="w-4 h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
+                   <div className="flex gap-2 md:gap-4 p-4 md:p-8 bg-white/5 border-2 md:border-4 border-accent/20 px-6 md:px-12 rotate-3">
+                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-2 h-2 md:w-4 md:h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
+                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }} className="w-2 h-2 md:w-4 md:h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
+                      <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }} className="w-2 h-2 md:w-4 md:h-4 bg-accent shadow-[0_0_15px_var(--color-accent)]" />
                    </div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-12 border-t-8 border-accent bg-black relative">
-              <form onSubmit={handleSendMessage} className="flex gap-10 items-center">
+            <div className="p-4 md:p-12 border-t-4 md:border-t-8 border-accent bg-black relative">
+              <form onSubmit={handleSendMessage} className="flex gap-4 md:gap-10 items-center">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder="TRANSMIT THOUGHTS..."
-                  className="flex-1 bg-white/5 border-4 border-white/10 py-6 px-10 text-4xl font-black italic tracking-tighter focus:outline-none focus:border-accent transition-all text-white placeholder:text-white/5"
+                  placeholder="TRANSMIT..."
+                  className="flex-1 bg-white/5 border-2 md:border-4 border-white/10 py-3 md:py-6 px-4 md:px-10 text-xl md:text-4xl font-black italic tracking-tighter focus:outline-none focus:border-accent transition-all text-white placeholder:text-white/5"
                 />
                 <button 
                   type="submit" 
                   disabled={isTyping || !inputText.trim()} 
-                  className="bg-accent text-white px-20 py-8 text-4xl font-black uppercase italic tracking-tighter shadow-[10px_10px_0_white] hover:bg-white hover:text-black transition-all disabled:opacity-30 disabled:grayscale"
+                  className="bg-accent text-white px-8 md:px-20 py-3 md:py-8 text-xl md:text-4xl font-black uppercase italic tracking-tighter shadow-[4px_4px_0_white] md:shadow-[10px_10px_0_white] hover:bg-white hover:text-black transition-all disabled:opacity-30 disabled:grayscale"
                 >
-                  {isTyping ? <Radio className="animate-spin mx-auto" size={40} /> : "FIRE"}
+                  {isTyping ? <Radio className="w-6 h-6 md:w-10 md:h-10 animate-spin mx-auto" /> : "FIRE"}
                 </button>
               </form>
-              <div className="absolute inset-0 bg-accent/5 pointer-events-none animate-pulse" />
             </div>
           </YokaiCard>
         </div>

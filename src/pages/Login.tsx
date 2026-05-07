@@ -1,15 +1,16 @@
 import React from "react";
 import { auth } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInAnonymously } from "firebase/auth";
 import { YokaiCard, YokaiButton, YokaiHeader, YokaiBadge, YokaiDivider } from "../components/UI";
-import { LogIn, Loader2, Shield, Globe, Activity, Lock, Zap, Sparkles, Flame } from "lucide-react";
+import { LogIn, Loader2, Shield, Globe, Activity, Lock, Zap, Sparkles, Flame, UserCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+  const [isGuestLoggingIn, setIsGuestLoggingIn] = React.useState(false);
 
   const handleGoogleLogin = async () => {
-    if (isLoggingIn) return;
+    if (isLoggingIn || isGuestLoggingIn) return;
     setIsLoggingIn(true);
     const provider = new GoogleAuthProvider();
     try {
@@ -24,6 +25,20 @@ export const Login = () => {
       }
     } finally {
       setIsLoggingIn(false);
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    if (isLoggingIn || isGuestLoggingIn) return;
+    setIsGuestLoggingIn(true);
+    try {
+      await signInAnonymously(auth);
+      toast.success("Guest resonance established.");
+    } catch (error) {
+       console.error("Guest Login Error:", error);
+       toast.error("Failed to establish guest connection.");
+    } finally {
+      setIsGuestLoggingIn(false);
     }
   };
 
@@ -79,7 +94,7 @@ export const Login = () => {
               <YokaiButton 
                 onClick={handleGoogleLogin} 
                 variant="solid" 
-                disabled={isLoggingIn}
+                disabled={isLoggingIn || isGuestLoggingIn}
                 className="w-full py-6 group"
               >
                 {isLoggingIn ? (
@@ -87,6 +102,21 @@ export const Login = () => {
                 ) : (
                   <span className="tracking-[0.15em] flex items-center justify-center gap-4">
                     SYNC_IDENTITY <Sparkles size={18} className="group-hover:rotate-12 transition-transform" />
+                  </span>
+                )}
+              </YokaiButton>
+
+              <YokaiButton 
+                onClick={handleGuestLogin} 
+                variant="outline" 
+                disabled={isLoggingIn || isGuestLoggingIn}
+                className="w-full py-6 group border-white/10 hover:border-secondary/40"
+              >
+                {isGuestLoggingIn ? (
+                  <Loader2 className="animate-spin mx-auto" size={24} />
+                ) : (
+                  <span className="tracking-[0.15em] flex items-center justify-center gap-4">
+                    GUEST_ACCESS <UserCircle size={18} className="group-hover:scale-110 transition-transform" />
                   </span>
                 )}
               </YokaiButton>

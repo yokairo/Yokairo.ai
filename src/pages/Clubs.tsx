@@ -106,7 +106,7 @@ export const Clubs = () => {
                   <div className="border border-dashed border-white/10 bg-white/[0.02] p-6 hover:border-accent transition-all">
                     <ImageUpload 
                       onUploadComplete={(url) => setNewClub({ ...newClub, bannerUrl: url })}
-                      folder="club-banners"
+                      folder="clubs"
                     />
                   </div>
                 </div>

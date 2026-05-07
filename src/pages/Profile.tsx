@@ -28,8 +28,8 @@ export const Profile = () => {
       } else {
         const initialProfile: UserProfile = {
           uid: auth.currentUser.uid,
-          displayName: auth.currentUser.displayName || "New User",
-          email: auth.currentUser.email || "",
+          displayName: auth.currentUser.isAnonymous ? "GUEST_OPERATIVE" : (auth.currentUser.displayName || "USER_UNKNOWN"),
+          email: auth.currentUser.email || "ANONYMOUS_VOID",
           photoURL: auth.currentUser.photoURL || "",
           bio: "REDEFINING THE ANIME EXPERIENCE. OVERRIDING REALITY.",
           stats: { reviewsCount: 0, likesReceived: 0, charactersCreated: 0 }
