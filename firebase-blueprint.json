@@ -1,0 +1,135 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "bio": { "type": "string" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "reviewsCount": { "type": "number" },
+            "likesReceived": { "type": "number" }
+          }
+        }
+      },
+      "required": ["uid", "email"]
+    },
+    "Review": {
+      "title": "Anime Review",
+      "description": "A review of an anime written by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "animeTitle": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "rating": { "type": "number" },
+        "content": { "type": "string" },
+        "isAiAssisted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "likesCount": { "type": "number" },
+        "category": { "type": "string", "enum": ["Action", "Romance", "Dark/Fantasy", "Sci-Fi", "Slice of Life", "Other"] }
+      },
+      "required": ["authorId", "animeTitle", "rating", "content", "createdAt"]
+    },
+    "Post": {
+      "title": "Community Post",
+      "description": "A post in the community discussion",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "upvotes": { "type": "number" },
+        "commentsCount": { "type": "number" }
+      },
+      "required": ["authorId", "title", "content", "createdAt"]
+    },
+    "Club": {
+      "title": "Anime Club",
+      "description": "A fan club for a specific anime or genre",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "memberCount": { "type": "number" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "createdBy", "createdAt"]
+    },
+    "Character": {
+      "title": "AI Character",
+      "description": "An AI character created by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "personality": { "type": "string" },
+        "tone": { "type": "string" },
+        "style": { "type": "string" },
+        "background": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "avatarUrl", "personality"]
+    },
+    "Message": {
+      "title": "Chat Message",
+      "description": "A message in a chat with an AI character",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sender": { "type": "string", "enum": ["user", "character"] },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "mode": { "type": "string" }
+      },
+      "required": ["sender", "text", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Anime reviews"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Community posts"
+    },
+    "/clubs/{clubId}": {
+      "schema": "Club",
+      "description": "Anime fan clubs"
+    },
+    "/characters/{characterId}": {
+      "schema": "Character",
+      "description": "AI characters"
+    },
+    "/characters/{characterId}/chats/{userId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Chat messages"
+    },
+    "/reviews/{reviewId}/likes/{userId}": {
+      "schema": "object",
+      "description": "Likes on reviews"
+    }
+  }
+}
