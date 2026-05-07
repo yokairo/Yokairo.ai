@@ -14,13 +14,13 @@ export const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      toast.success("CORE_SYNC_READY: Neural link established.");
+      toast.success("Identity synchronized successfully. Welcome back.");
     } catch (error: any) {
       console.error("Login Error:", error);
       if (error.code === "auth/popup-closed-by-user") {
-        toast.error("ERROR: NEURAL_LINK_INTERRUPTED_BY_USER");
+        toast.error("Authentication cancelled.");
       } else {
-        toast.error("CRITICAL_FAILURE: VOLTAGE_DROP_IN_SECTOR_07");
+        toast.error("Connection failed. System error.");
       }
     } finally {
       setIsLoggingIn(false);
@@ -29,7 +29,6 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 md:px-12 relative overflow-hidden bg-black select-none">
-      <div className="scanline-overlay" />
       
       {/* Background kinetic energy */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-accent)_0%,transparent_70%)] opacity-10 animate-pulse" />

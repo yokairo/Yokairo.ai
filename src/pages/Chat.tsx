@@ -29,7 +29,7 @@ export const Chat = () => {
       if (docSnap.exists()) {
         setCharacter({ id: docSnap.id, ...docSnap.data() } as Character);
       } else {
-        toast.error("ENTITY LOST IN THE VOID.");
+        toast.error("Character index not found.");
         navigate("/characters");
       }
     };
@@ -103,7 +103,7 @@ export const Chat = () => {
         mode: currentMode
       });
     } catch (error) {
-      toast.error("TRANSMISSION SHATTERED. RE-SYNCING...");
+      toast.error("Transmission interrupted. Please check your connection.");
     } finally {
       setIsTyping(false);
     }

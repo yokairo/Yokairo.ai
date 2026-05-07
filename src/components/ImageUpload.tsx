@@ -39,10 +39,22 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, fold
     };
     reader.readAsDataURL(file);
 
+    // Initial check for size to decide if we compress
+    let fileToUpload = file;
+    
+    if (file.size > 1024 * 1024) { // If > 1MB, compress
+      try {
+        const compressed = await compressImage(file);
+        if (compressed) fileToUpload = compressed;
+      } catch (err) {
+        console.warn("Compression failed, uploading original:", err);
+      }
+    }
+
     // Upload
     setUploading(true);
-    const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storageRef = ref(storage, `${folder}/${Date.now()}_${fileToUpload.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
 
     uploadTask.on(
       "state_changed",
@@ -63,6 +75,54 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, fold
         toast.success("Image uploaded successfully!");
       }
     );
+  };
+
+  const compressImage = (file: File): Promise<File | null> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 1024;
+          const MAX_HEIGHT = 1024;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            } else {
+              resolve(null);
+            }
+          }, "image/jpeg", 0.7);
+        };
+      };
+      reader.onerror = () => resolve(null);
+    });
   };
 
   return (

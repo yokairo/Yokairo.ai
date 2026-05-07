@@ -70,7 +70,7 @@
 }
 
 .crt-effect {
-  animation: crt-flicker 0.15s infinite;
+  /* animation: crt-flicker 0.15s infinite; */
 }
 
 .yokai-glitch-hover:hover {
@@ -78,7 +78,7 @@
 }
 
 .glass-panel {
-  @apply bg-white/[0.03] backdrop-blur-xl border border-white/10;
+  @apply bg-white/[0.03] backdrop-blur-md border border-white/10;
 }
 
 .neon-border {

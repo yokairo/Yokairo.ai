@@ -54,9 +54,9 @@ export const Profile = () => {
       await setDoc(doc(db, "users", auth.currentUser.uid), { ...profile, bio }, { merge: true });
       setProfile({ ...profile, bio });
       setIsEditing(false);
-      toast.success("CORE LOGIC CALIBRATED.");
+      toast.success("Profile updated successfully.");
     } catch (error) {
-      toast.error("CALIBRATION FAILED.");
+      toast.error("Profile update failed.");
     }
   };
 
@@ -65,9 +65,9 @@ export const Profile = () => {
     try {
       await setDoc(doc(db, "users", auth.currentUser.uid), { photoURL: url }, { merge: true });
       setProfile({ ...profile, photoURL: url });
-      toast.success("IDENTITY FRAGMENT UPDATED.");
+      toast.success("Identity visual updated.");
     } catch (error) {
-      toast.error("UPDATE FAILURE.");
+      toast.error("An error occurred while updating.");
     }
   };
 

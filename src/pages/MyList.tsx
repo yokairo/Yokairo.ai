@@ -41,7 +41,7 @@ export const MyList = () => {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth.currentUser) return;
-    if (!newItem.animeTitle) return toast.error("TITLE IDENTIFIER REQUIRED.");
+    if (!newItem.animeTitle) return toast.error("Anime title is required.");
     try {
       await addDoc(collection(db, `users/${auth.currentUser.uid}/mylist`), {
         ...newItem,
@@ -50,9 +50,9 @@ export const MyList = () => {
       });
       setShowAdd(false);
       setNewItem({ animeTitle: "", totalEpisodes: 12, status: "Plan to Watch" });
-      toast.success("STREAM DATA BUFFERED.");
+      toast.success("Anime added to your list.");
     } catch (error) {
-      toast.error("BUFFER FAILED.");
+      toast.error("Failed to add anime.");
     }
   };
 
@@ -65,7 +65,7 @@ export const MyList = () => {
         status: current + 1 === total ? "Completed" : "Watching"
       });
     } catch (error) {
-      toast.error("SYNC COLLISION.");
+      toast.error("Sync error. Please try again.");
     }
   };
 
@@ -73,9 +73,9 @@ export const MyList = () => {
     if (!auth.currentUser) return;
     try {
       await deleteDoc(doc(db, `users/${auth.currentUser.uid}/mylist`, id));
-      toast.success("ENTRY SHREDDED.");
+      toast.success("Entry removed from list.");
     } catch (error) {
-      toast.error("PURGE ABORTED.");
+      toast.error("Purge failed.");
     }
   };
 

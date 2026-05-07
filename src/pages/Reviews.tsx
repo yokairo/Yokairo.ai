@@ -59,7 +59,7 @@ export const Reviews = () => {
   }, [reviews, searchTerm, selectedCategory, sortBy]);
 
   const handleEnhance = async () => {
-    if (!newReview.content) return toast.error("Data input required for sync augmentation.");
+    if (!newReview.content) return toast.error("Please enter some content for the AI to enhance.");
     setIsEnhancing(true);
     try {
       const response = await fetch("/api/ai-enhance", {
@@ -70,10 +70,10 @@ export const Reviews = () => {
       const data = await response.json();
       if (data.enhancedText) {
         setNewReview({ ...newReview, content: data.enhancedText });
-        toast.success("LOGIC FRAGMENTS OPTIMIZED.");
+        toast.success("Content optimized by AI.");
       }
     } catch (error) {
-      toast.error("AUGMENTATION FAILURE.");
+      toast.error("AI enhancement failed.");
     } finally {
       setIsEnhancing(false);
     }
@@ -81,9 +81,9 @@ export const Reviews = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth.currentUser) return toast.error("AUTHORIZATION CORE MISSING.");
+    if (!auth.currentUser) return toast.error("Please sign in to publish a manifest.");
     if (!newReview.animeTitle || !newReview.content || !newReview.imageUrl) {
-      return toast.error("INCOMPLETE DATA PACKET.");
+      return toast.error("Please fill in all required data fields.");
     }
 
     setIsPublishing(true);
@@ -103,22 +103,22 @@ export const Reviews = () => {
       });
       setShowForm(false);
       setNewReview({ animeTitle: "", rating: 5, content: "", category: "Action", imageUrl: "" });
-      toast.success("CRITIQUE RELEASED INTO THE STREAM.");
+      toast.success("Manifest successfully synchronized to the grid.");
     } catch (error) {
-      toast.error("RELEASE FAILED. VOLTAGE DROP.");
+      toast.error("Synchronization failed. System connection error.");
     } finally {
       setIsPublishing(false);
     }
   };
 
   const handleLike = async (reviewId: string) => {
-    if (!auth.currentUser) return toast.error("AUTH REQUIRED.");
+    if (!auth.currentUser) return toast.error("Please sign in to sync resonance.");
     const likeRef = doc(db, "reviews", reviewId, "likes", auth.currentUser.uid);
     try {
       await setDoc(likeRef, { liked: true });
       await updateDoc(doc(db, "reviews", reviewId), { likesCount: increment(1) });
     } catch (error) {
-      toast.error("SYNC LOW.");
+      toast.error("Resonance sync failed.");
     }
   };
 

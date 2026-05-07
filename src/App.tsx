@@ -31,7 +31,6 @@ export default function App() {
     return (
       <div className="h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden relative">
         <YokaiBackground />
-        <div className="scanline-overlay" />
         <div className="relative z-10 flex flex-col items-center">
             <motion.div 
               initial={{ scale: 0.8, opacity: 0 }}
@@ -54,7 +53,6 @@ export default function App() {
     <Router>
       <div className="min-h-screen text-white selection:bg-accent selection:text-white relative bg-black font-display antialiased overflow-x-hidden">
         <YokaiBackground />
-        <div className="scanline-overlay" />
         <Navbar />
         <main className="min-h-screen relative z-10">
           <Routes>

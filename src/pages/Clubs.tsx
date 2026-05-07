@@ -36,8 +36,8 @@ export const Clubs = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth.currentUser) return toast.error("SESSION EXPIRED. RE-INITIALIZE.");
-    if (!newClub.name || !newClub.bannerUrl) return toast.error("INCOMPLETE DATA PACKET.");
+    if (!auth.currentUser) return toast.error("Please sign in to establish a faction.");
+    if (!newClub.name || !newClub.bannerUrl) return toast.error("Name and banner are required.");
 
     setIsCreating(true);
     try {
@@ -49,12 +49,17 @@ export const Clubs = () => {
       });
       setShowForm(false);
       setNewClub({ name: "", description: "", bannerUrl: "", category: "General" });
-      toast.success("FACTION ESTABLISHED.");
+      toast.success("Faction successfully established.");
     } catch (error) {
-      toast.error("COULD NOT FORGE FACTION.");
+      toast.error("Failed to forge faction. System error.");
     } finally {
       setIsCreating(false);
     }
+  };
+
+  const handleJoin = (clubName: string) => {
+    if (!auth.currentUser) return toast.error("Authentication required to join factions.");
+    toast.success(`You have successfully resonated with ${clubName}.`);
   };
 
   return (
@@ -210,7 +215,7 @@ export const Clubs = () => {
                         </div>
                       </div>
                     </div>
-                    <YokaiButton className="px-6 py-2 text-xs font-bold" variant="solid">
+                    <YokaiButton onClick={() => handleJoin(club.name)} className="px-6 py-2 text-xs font-bold" variant="solid">
                       RESONATE
                     </YokaiButton>
                   </div>

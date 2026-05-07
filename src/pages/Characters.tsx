@@ -38,9 +38,9 @@ export const Characters = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth.currentUser) return toast.error("SESSION EXPIRED. RE-INITIALIZE.");
+    if (!auth.currentUser) return toast.error("Please sign in to manifest an entity.");
     if (!newChar.name || !newChar.personality || !newChar.avatarUrl) {
-      return toast.error("INCOMPLETE DATA PACKET. NAME/PORTRAIT REQUIRED.");
+      return toast.error("Name and portrait are required for initialization.");
     }
 
     setIsSummoning(true);
@@ -63,9 +63,9 @@ export const Characters = () => {
 
       setShowForm(false);
       setNewChar({ name: "", personality: "", tone: "", style: "", background: "", avatarUrl: "" });
-      toast.success("ENTITY VITALIZED. READY FOR DEPLOYMENT.");
+      toast.success("Entity successfully vitalized.");
     } catch (error) {
-      toast.error("VITALIZATION FAILED. CORE INSTABILITY.");
+      toast.error("Vitalization failed. System instability.");
     } finally {
       setIsSummoning(false);
     }

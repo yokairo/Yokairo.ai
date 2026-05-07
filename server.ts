@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,30 +25,20 @@ async function startServer() {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
-      console.error("AI Enhancement Error: Missing or invalid GEMINI_API_KEY environment variable.");
-      return res.status(500).json({ error: "AI service is not configured. Please set GEMINI_API_KEY in the Secrets panel." });
+    if (!apiKey) {
+      console.error("AI service is not configured.");
+      return res.status(500).json({ error: "AI service configuration is incomplete. Please set GEMINI_API_KEY." });
     }
 
     try {
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `You are an AI assistant for the anime social platform YOKAI. 
-        Your task is to ENHANCE the grammar and clarity of the following anime review.
-        
-        STRICT RULES:
-        1. ONLY fix grammar, spelling, and punctuation.
-        2. NEVER change the meaning or opinion of the user.
-        3. NEVER add your own opinions or hallucinations.
-        4. Keep the tone authentic to the original user.
-        5. If the content is already perfect, return it as is.
-        
-        Review to enhance:
-        "${content}"`,
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        systemInstruction: "You are an AI assistant for the anime social platform YOKAI. Your task is to ENHANCE the grammar and clarity of anime reviews while keeping the original meaning and tone. Return ONLY the enhanced text."
       });
 
-      const enhancedText = response.text;
+      const result = await model.generateContent(content);
+      const enhancedText = result.response.text();
       res.json({ enhancedText });
     } catch (error) {
       console.error("AI Enhancement Error:", error);
@@ -64,19 +54,19 @@ async function startServer() {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+    if (!apiKey) {
       return res.status(500).json({ error: "AI service is not configured." });
     }
 
     try {
-      const ai = new GoogleGenAI({ apiKey });
+      const genAI = new GoogleGenerativeAI(apiKey);
       
       const modeInstructions = {
-        Normal: "Maintain a balanced and consistent personality based on your description.",
-        Roast: "Be savage, funny, and use clever insults. Don't be afraid to be mean in a humorous anime-style way.",
-        Friendly: "Be extremely supportive, chill, and kind. Act like a best friend.",
-        Emotional: "Be deep, dramatic, and sensitive. Use poetic and emotional anime-style language.",
-        Motivational: "Be high-energy, inspiring, and hype. Act like a shonen protagonist pushing someone to their limits."
+        Normal: "Maintain a balanced and consistent personality.",
+        Roast: "Be savage, funny, and use clever insults in a humorous way.",
+        Friendly: "Be supportive, chill, and act like a close friend.",
+        Emotional: "Be deep, dramatic, and poetic.",
+        Motivational: "Be high-energy and inspiring, like a shonen protagonist."
       };
 
       const systemInstruction = `You are ${character.name}. 
@@ -86,33 +76,28 @@ async function startServer() {
       Background: ${character.background}
       
       CURRENT MODE: ${mode}
-      MODE INSTRUCTIONS: ${modeInstructions[mode as keyof typeof modeInstructions]}
+      MODE INSTRUCTIONS: ${modeInstructions[mode as keyof typeof modeInstructions] || modeInstructions.Normal}
       
-      STRICT RULES:
+      RULES:
       1. Stay in character at all times.
-      2. Adapt your tone and vocabulary to the current mode.
-      3. Do not mention you are an AI.
-      4. Keep replies relatively concise but impactful.
-      5. Reference your background if relevant.`;
+      2. Do not mention you are an AI.
+      3. Keep replies relatively concise.
+      4. Avoid technical jargon unless part of your character.`;
 
-      const contents = [
-        ...history.map((h: any) => ({
-          role: h.sender === "user" ? "user" : "model",
-          parts: [{ text: h.text }]
-        })),
-        { role: "user", parts: [{ text: message }] }
-      ];
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents,
-        config: {
-          systemInstruction,
-          temperature: 0.9,
-        }
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        systemInstruction
       });
 
-      res.json({ reply: response.text });
+      const chat = model.startChat({
+        history: history.map((h: any) => ({
+          role: h.role === "user" ? "user" : "model",
+          parts: [{ text: h.text }]
+        }))
+      });
+
+      const result = await chat.sendMessage(message);
+      res.json({ reply: result.response.text() });
     } catch (error) {
       console.error("Character Chat Error:", error);
       res.status(500).json({ error: "Failed to generate reply" });

@@ -52,9 +52,14 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     operationType,
     path
   }
+  
+  if (errInfo.error.includes("permission-denied")) {
+    console.warn(`Firestore Access Denied: [${operationType}] at [${path}]`);
+    return "Access restricted. Authentication may be required.";
+  }
+  
   console.error('Firestore Error: ', JSON.stringify(errInfo));
-  // In a real production app we might throw, but here we'll just log and maybe return the message
-  return errInfo;
+  return "Synchronization error. Please try again later.";
 }
 
 async function testConnection() {

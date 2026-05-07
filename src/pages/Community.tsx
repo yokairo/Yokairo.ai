@@ -29,8 +29,8 @@ export const Community = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!auth.currentUser) return toast.error("SESSION EXPIRED. RE-INITIALIZE.");
-    if (!newPost.title || !newPost.content) return toast.error("DATA FRAGMENTS INCOMPLETE.");
+    if (!auth.currentUser) return toast.error("Please sign in to deploy a signal.");
+    if (!newPost.title || !newPost.content) return toast.error("Identifier and content required.");
 
     setIsTransmitting(true);
     try {
@@ -47,16 +47,16 @@ export const Community = () => {
       });
       setNewPost({ title: "", content: "" });
       setShowCreator(false);
-      toast.success("TRANSMISSION DEPLOYED.");
+      toast.success("Signal successfully transmitted to the collective.");
     } catch (error) {
-      toast.error("TRANSMISSION FAILED. INTERFERENCE.");
+      toast.error("Transmission failed. Network interference detected.");
     } finally {
       setIsTransmitting(false);
     }
   };
 
   const handleVote = async (postId: string, amount: number) => {
-    if (!auth.currentUser) return toast.error("UNAUTHORIZED ACCESS.");
+    if (!auth.currentUser) return toast.error("Authentication required to upvote.");
     const postRef = doc(db, "posts", postId);
     await updateDoc(postRef, { upvotes: increment(amount) });
   };

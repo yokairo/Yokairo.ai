@@ -23,8 +23,7 @@ export const YokaiCard: React.FC<{
     viewport={{ once: true }}
     transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
     className={cn(
-      "relative p-6 glass-panel neon-border hover:neon-border-purple transition-all duration-500 group overflow-hidden crt-effect", 
-      scanline && "scanline-active",
+      "relative p-6 glass-panel neon-border hover:border-secondary transition-all duration-300 group overflow-hidden", 
       className
     )}
   >
@@ -55,25 +54,22 @@ export const YokaiButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>
   variant?: "solid" | "outline" | "ghost";
 }> = ({ children, className, variant = "outline", ...props }) => {
   const themes = {
-    solid: "bg-accent text-black border-accent hover:bg-secondary hover:border-secondary hover:text-white shadow-[4px_4px_0_var(--color-secondary)]",
-    outline: "bg-white/5 border-white/20 text-white hover:bg-white hover:text-black hover:border-white shadow-[4px_4px_0_rgba(255,255,255,0.1)]",
+    solid: "bg-accent text-black border-accent hover:bg-white hover:border-white shadow-[2px_2px_0_var(--color-secondary)]",
+    outline: "bg-white/5 border-white/20 text-white hover:bg-white hover:text-black hover:border-white shadow-[2px_2px_0_rgba(255,255,255,0.1)]",
     ghost: "bg-transparent border-transparent text-white/40 hover:text-accent hover:bg-accent/5 shadow-none"
   };
 
   return (
-    <motion.button 
-      whileHover={{ scale: 1.02, skewX: -4 }}
-      whileTap={{ scale: 0.98 }}
+    <button 
       className={cn(
-        "px-10 py-3 font-display font-black uppercase tracking-widest text-[11px] border transition-all duration-300 relative flex items-center justify-center gap-3 overflow-hidden active:translate-x-1 active:translate-y-1 active:shadow-none",
+        "px-10 py-3 font-display font-black uppercase tracking-widest text-[11px] border transition-all duration-200 relative flex items-center justify-center gap-3 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none",
         themes[variant],
         className
       )}
       {...(props as any)}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       <span className="relative z-10 italic flex items-center gap-3">{children}</span>
-    </motion.button>
+    </button>
   );
 };
 
@@ -121,8 +117,8 @@ export const YokaiHeader: React.FC<{
 export const YokaiBackground: React.FC = () => (
   <div className="fixed inset-0 z-[-1] overflow-hidden bg-[#05050A]">
     <div className="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
-    <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] animate-pulse" />
-    <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] animate-pulse [animation-delay:1.5s]" />
+    <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
+    <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[150px]" />
     <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
   </div>
 );
@@ -137,11 +133,12 @@ export const YokaiBadge: React.FC<{ children: React.ReactNode; className?: strin
 );
 
 export const YokaiDivider: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("h-1 w-full bg-white/10 relative overflow-hidden", className)}>
+  <div className={cn("h-px w-full bg-white/5 relative overflow-hidden", className)}>
     <motion.div 
-      animate={{ x: ["-100%", "100%"] }}
-      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-      className="absolute inset-0 w-1/4 bg-accent"
+      initial={{ x: "-100%" }}
+      animate={{ x: "200%" }}
+      transition={{ duration: 5, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+      className="absolute inset-0 w-1/2 bg-accent opacity-20"
     />
   </div>
 );
